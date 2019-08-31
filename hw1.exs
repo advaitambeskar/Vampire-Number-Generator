@@ -1,40 +1,54 @@
-defmodule MyModule do
-    def check(order, num) do
-        digits = Enum.sort(Integer.digits(num))
-        len = Enum.count(digits)
+defmodule MyModule do    
+    def check(order, num, path) do
+        len = Enum.count(order)
         if rem(len, 2) == 0 do 
             {list1, list2} = Enum.split(order, div(len,2))
-            list1 = Enum.map(list1, fn x -> Enum.at(digits, x) end)
-            list2 = Enum.map(list2, fn x -> Enum.at(digits, x) end)
             if (Enum.at(list1, -1) != 0 || Enum.at(list2, -1) != 0) do
                 fung1 = List.foldl(list1, 0, fn x, acc -> 10 * acc + x end)
                 fung2 = List.foldl(list2, 0, fn x, acc -> 10 * acc + x end)
-                if fung1 <= fung2 && fung1 * fung2 == num, do: IO.puts(Enum.join([fung1, fung2], " "))
+                if fung1 <= fung2 && fung1 * fung2 == num do
+                    IO.puts(Enum.join([fung1, fung2], " "))
+                    File.write(path, Enum.join([num, fung1, fung2], " ") <> "\n", [:append])
+                end
             end
         end
     end
 
-    def permutation(len, prefix, num) do
-        if Enum.count(prefix) == len do # all digits are ready
-            check(prefix, num)
+    def _should_swap?(list, start, curr) do
+        curr-1 < 0 or not Enum.at(list, curr) in Enum.slice(list, start..(curr-1))
+    end
+
+    def permutation(list, index, n, num, path) do 
+        if index == n do
+            check(list, num, path)
         else
-            for i <- 0..len-1 do
-                if prefix -- [i] == prefix do # i doesn't appear in prefix
-                    prefix = prefix ++ [i] 
-                    permutation(len, prefix, num)
-                    prefix = prefix |> Enum.reverse() |> tl() |> Enum.reverse() # remove the last element
+            at_index =  Enum.at(list, index)
+            for i <- index..n-1 do
+                at_i = Enum.at(list, i) 
+                if _should_swap?(list, index, i) do
+                    new_list = List.replace_at(list, i, at_index)
+                    new_list = List.replace_at(new_list, index, at_i)
+                    permutation(new_list, index + 1, n, num, path)
                 end
             end
         end
-    end 
+    end
 
-    def isVampire(num) do
-        permutation(Enum.count(Integer.digits(num)), [], num)
+    def isVampire(num, path) do
+        digits = Integer.digits(num)
+        permutation(digits, 0, length(digits), num, path)
     end
 
 end
 
-MyModule.isVampire(1260)
+
+result_path = "./result.txt"
+if File.exists?(result_path), do: File.rm(result_path)
+File.touch(result_path)
+MyModule.isVampire(1000174288, result_path)
+MyModule.isVampire(125460, result_path)
+MyModule.isVampire(1254601234, result_path)
+
 
 
 
