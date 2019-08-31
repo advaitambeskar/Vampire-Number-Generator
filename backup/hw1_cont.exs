@@ -4,7 +4,7 @@ defmodule RangeVampire do
 
   def rangeAccepter(num1, num2) do
     range_in_list = Enum.to_list(num1..num2)
-    range_list_chunk = Enum.chunk_every(range_in_list, div((num2 + 1 - num1), 32))
+    range_list_chunk = Enum.chunk_every(range_in_list, div((num2 + 1 - num1), 16))
     #IO.inspect(range_list_chunk, charlists: :as_lists)
 
     async_actor =
