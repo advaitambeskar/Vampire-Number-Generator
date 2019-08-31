@@ -1,8 +1,26 @@
 defmodule MyModule do
+    def isVampire(num) do
+        permutation(Enum.count(Integer.digits(num)), [], num)
+    end
+
+    def permutation(len, prefix, num) do
+        if Enum.count(prefix) == len do # all digits are ready
+            check(prefix, num)
+        else
+            for i <- 0..len-1 do
+                if prefix -- [i] == prefix do # i doesn't appear in prefix
+                    prefix = prefix ++ [i]
+                    permutation(len, prefix, num)
+                    prefix = prefix |> Enum.reverse() |> tl() |> Enum.reverse() # remove the last element
+                end
+            end
+        end
+    end
+
     def check(order, num) do
         digits = Enum.sort(Integer.digits(num))
         len = Enum.count(digits)
-        if rem(len, 2) == 0 do 
+        if rem(len, 2) == 0 do
             {list1, list2} = Enum.split(order, div(len,2))
             list1 = Enum.map(list1, fn x -> Enum.at(digits, x) end)
             list2 = Enum.map(list2, fn x -> Enum.at(digits, x) end)
@@ -14,27 +32,18 @@ defmodule MyModule do
         end
     end
 
-    def permutation(len, prefix, num) do
-        if Enum.count(prefix) == len do # all digits are ready
-            check(prefix, num)
-        else
-            for i <- 0..len-1 do
-                if prefix -- [i] == prefix do # i doesn't appear in prefix
-                    prefix = prefix ++ [i] 
-                    permutation(len, prefix, num)
-                    prefix = prefix |> Enum.reverse() |> tl() |> Enum.reverse() # remove the last element
-                end
-            end
-        end
-    end 
-
-    def isVampire(num) do
-        permutation(Enum.count(Integer.digits(num)), [], num)
-    end
-
 end
 
-MyModule.isVampire(1260)
+#MyModule.isVampire(10025010)
+#MyModule.isVampire(10042510)
+#MyModule.isVampire(10052010)
+#MyModule.isVampire(10052064)
+#MyModule.isVampire(10052068)
+#MyModule.isVampire(10021345)
+#MyModule.isVampire(16758243290880)
+#MyModule.isVampire(18762456533040)
+MyModule.isVampire(1000174288)
+
 
 
 
