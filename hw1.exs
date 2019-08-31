@@ -34,15 +34,7 @@ defmodule MyModule do
 
 end
 
-#MyModule.isVampire(10025010)
-#MyModule.isVampire(10042510)
-#MyModule.isVampire(10052010)
-#MyModule.isVampire(10052064)
-#MyModule.isVampire(10052068)
-#MyModule.isVampire(10021345)
-#MyModule.isVampire(16758243290880)
-#MyModule.isVampire(18762456533040)
-MyModule.isVampire(1000174288)
+
 
 
 
