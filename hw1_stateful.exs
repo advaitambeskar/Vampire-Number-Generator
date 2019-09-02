@@ -2,30 +2,29 @@ defmodule VampireStateful do
 
   use Agent
 
-  import RangeVampire, only: [rangeAccepter: 2]
+  import VampireNumber, only: [find_in_range: 2]
 
   def agent_creator(num1, num2) do
     if ((num1 - num2) <= 10000000) do
-      {:ok, pid} = Agent.start_link(num1, num2)
+      large_range_agents(num1, num2, 100000)
     else
-      large_range_agents(num1, num2)
+      large_range_agents(num1, num2, 10000000)
     end
   end
 
-  def large_range_agents(num1, num2) do
-    if(num1 - num2 <= 10000000) do
+  def large_range_agents(num1, num2, range) do
+    if(num1 - num2 <= range) do
       {:ok, pid} = Agent.start_link(num1, num2)
     else
-      {:ok, pid} = Agent.start_link(num1, num1 + 10000000)
-      large_range_agents(num1 + 10000000, num2)
+      {:ok, pid} = Agent.start_link(num1, num1 + range)
+      large_range_agents(num1 + range, num2)
     end
   end
 
   def start_link(num1, num2) do
     Agent.start_link(fn ->
-      IO.puts ("something")
       # You have to pass the numbers to the hw1_cont function and start printing outputs
-      rangeAccepter(num1, num2)
+      find_in_range(num1, num2)
     end)
   end
 
