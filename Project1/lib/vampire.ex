@@ -37,7 +37,7 @@ defmodule VampireNumber do
             
             fung1_chunks = Enum.chunk_every(fung1_range, div(Enum.count(fung1_range), worker_num))
             for chunk<-fung1_chunks do
-                calc_loop(chunk, lower, upper,len, pid)
+                spawn(fn ->calc_loop(chunk, lower, upper,len, pid) end)
             end
         end
     end
