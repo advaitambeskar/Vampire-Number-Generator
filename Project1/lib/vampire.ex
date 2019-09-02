@@ -36,10 +36,25 @@ defmodule VampireNumber do
             fung1_range = trunc(:math.pow(10, len-1))..trunc(:math.pow(10, len))-1 
             
             fung1_chunks = Enum.chunk_every(fung1_range, div(Enum.count(fung1_range), worker_num))
-            for chunk<-fung1_chunks do
-                spawn(fn ->calc_loop(chunk, lower, upper,len, pid) end)
-            end
+
+            parent = self()
+            refs = Enum.map(0..worker_num-1, fn n ->
+                ref = make_ref()
+                chunk = Enum.at(fung1_chunks, n)
+                spawn_link(fn -> calc_loop(chunk, lower, upper,len, pid); send(parent, {:done, ref}) end)
+                ref
+            end)
+
+            # wait for all spawned processes to finish
+            Enum.each(refs, fn ref ->
+                receive do
+                    {:done, ref} -> :ok
+                end
+            end)
+
         end
+
+
     end
 end
 
