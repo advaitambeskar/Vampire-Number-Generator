@@ -54,8 +54,9 @@ This is just a representation of the result. The result is stored at [result.txt
 
 
 ### Report the running time for the above problem (4).
-(Image Here!)
+
 ![Running Time for 6 digit range 100000 - 200000](/Project1/documentation/six-digs.png)
+
 **Ratio : User/ Real = 1.9454**
 ### The largest problem you managed to solve
 We ran the code for all 10 digits numbers. It took __more than 33 minutes__ but we found __all__ the 10 digit vampire numbers. So the largest 10-digit vampire number **(9953948970)** is the largest number we encountered.
