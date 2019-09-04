@@ -10,9 +10,10 @@ defmodule VampireNumber do
         end
     end
 
-    def calc_loop(chunk, lower, upper, len, pid) do
-        for fung1<-chunk do # iterate for the fung1
-            for fung2<-fung1..trunc(:math.pow(10, len))-1 do     # iterate for the fung2 
+    def calc_loop(chunk, lower, upper, len, pid) do 
+        fung2_upper = trunc(:math.pow(10, len))-1
+        for fung1<-chunk do # iterate for the fung1         
+            for fung2<-fung1..fung2_upper do     # iterate for the fung2 
 
                 if is_valid?(fung1, fung2, lower, upper) do       
                     if Enum.sort(Integer.digits(fung1*fung2)) == 
@@ -22,6 +23,27 @@ defmodule VampireNumber do
                     end
                 end
             end             
+        end
+    end
+
+    # call this only if the lower and upper bounds have the same length
+    def find_in_range_same_length(lower, upper, pid) do
+        int_len = length(Integer.digits(lower))
+        if rem(int_len, 2) == 0 do
+            len = div(int_len, 2)
+            fung1_range = div(lower, trunc(:math.pow(10,len)-1))..trunc(:math.sqrt(upper))
+            fung2_upper = trunc(:math.pow(10, len))-1
+            for fung1<-fung1_range do
+                for fung2<-fung1..fung2_upper do
+                    if is_valid?(fung1, fung2, lower, upper) do       
+                        if Enum.sort(Integer.digits(fung1*fung2)) == 
+                            Enum.sort(Integer.digits(fung1)++Integer.digits(fung2)) do
+                            VampireNumberReciever.add(pid, {fung1*fung2, fung1, fung2})
+                            # IO.puts(Enum.join([fung1*fung2, fung1, fung2], " "))
+                        end
+                    end
+                end
+            end
         end
     end
 
