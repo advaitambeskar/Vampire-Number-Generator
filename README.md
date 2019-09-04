@@ -73,7 +73,8 @@ We could not use observer.start() for the range 100000 to 200000, so we used the
 ## Program Structure
 This is the image description for the modules that we have designed and written.
 
-(Image Here!)
+![Programs structure for easy understanding](/Project1/documentation/mod-diag.jpg)
+
 ## Contributing
 Since this is a private repository intended to serve as a backup for the project as required by the course, pull requests would not be welcome unless authorized by the members of the public. This may change after the submission is complete.
 
