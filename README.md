@@ -7,7 +7,7 @@
 ## Requirements
 Use the [link](https://elixir-lang.org/install.html) to install Elixir which is a hard requirement for this project.
 
-##Instructions
+## Instructions
 > Unzip the file (project1.zip)
 
 ```shell
@@ -18,16 +18,16 @@ cd Project1
 mix run proj1.exs <number 1> <number2>
 ```
 
-##Questions
-####Number of Actors Created
+## Questions
+#### Number of Actors Created
 ```
 16
 ```
-####Size of the work unit of each worker actor that you determined results in best performance for your implementation and an explanation on how you determined it. Size of the work unit refers to the number of sub-problems that a worker gets in a single request from the boss.
+#### Size of the work unit of each worker actor that you determined results in best performance for your implementation and an explanation on how you determined it. Size of the work unit refers to the number of sub-problems that a worker gets in a single request from the boss.
 ```
 Less than (total range/16)
 ```
-####The result of running your program for: mix run proj1.exs 100000 200000
+#### The result of running your program for: mix run proj1.exs 100000 200000
 | :---------- | :------------: | -----------:|
 | 102510 201 510 | 140350 350 401 | 105210 210 501 |
 | 163944 396 414 | 104260 260 401 | 129640 140 926 |
