@@ -50,7 +50,7 @@ Less than (total range/16)
 | 125460 204 615 246 510 | 117067 167 701 | 132430 323 410 |
 | 124483 281 443 | 150300 300 501 | 180297 201 897 |
 
-This is just a representation of the result. The result is stored at [result.txt](https://github.com/advaitambeskar/DOS_VAMPIRE_NUMBER/tree/master/Project1/documentation/result.txt “Result is copied to this file to be displayed easily)
+This is just a representation of the result. The result is stored at [result.txt](https://github.com/advaitambeskar/DOS_VAMPIRE_NUMBER/tree/master/Project1/documentation/result.txt)
 
 
 ### Report the running time for the above problem (4).
