@@ -61,14 +61,14 @@ This is just a representation of the result. The result is stored at [result.txt
 ### The largest problem you managed to solve
 We ran the code for all 10 digits numbers. It took __more than 33 minutes__ but we found __all__ the 10 digit vampire numbers. So the largest 10-digit vampire number **(9953948970)** is the largest number we encountered.
 
-(Image here!) 
+![Ten digit outputs](/Project1/documentation/ten-digs.png) 
 
 **Ratio: User/ Real = 11801178/2035635 = 5.7972**
 
 ### You could also inspect your code with observer
-We could not use observer.start() for the range 100000 to 200000, so we used the same function for 10000000 to 20000000 and have attached the output that we observed
+We could not use observer.start() for the range 100000 to 200000, so we used the same function for 1000000000 to 2000000000 and have attached the output that we observed
 
-(Image here!)
+![CPU Utilization for 10 digit numbers](/Project1/documentation/CPU.png)
 
 ## Program Structure
 This is the image description for the modules that we have designed and written.
