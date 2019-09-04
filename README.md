@@ -11,7 +11,7 @@ Use the [link](https://elixir-lang.org/install.html) to install Elixir which is 
 > Unzip the file (project1.zip)
 
 ```shell
-cd $working-directory
+cd working-directory
 cd Project1
 ```
 ```elixir
