@@ -13,6 +13,10 @@ defmodule VampireNumberReciever do
         GenServer.call(process_id, {:write})
     end
 
+    def send_state(process_id) do
+        GenServer.call(process_id, {:send_state})
+    end
+
     @doc """
     Receive answers from VampireNumber and store them in a map
     """
@@ -25,20 +29,22 @@ defmodule VampireNumberReciever do
         else
             answers = Map.put(answers, vampire, [fung1, fung2])
             {:reply, [], answers}
-        end
-        
+        end      
     end
 
     @doc """
     Out put the answers from the map
     """
-    def handle_call({:write}, _, answers) do
-        
+    def handle_call({:write}, _, answers) do  
         Enum.each answers,  fn {k, v} ->
             IO.puts "#{k} #{Enum.join(v, " ")}"
         end 
         # IO.puts(Enum.count(answers))
         {:reply, [], answers}
+    end
+
+    def handle_call({:send_state}, _, answers) do
+        {:reply, answers, answers}
     end
 
 

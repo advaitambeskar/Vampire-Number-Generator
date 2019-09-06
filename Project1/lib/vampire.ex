@@ -119,6 +119,52 @@ defmodule VampireNumber do
             end)
         end
     end
+
+    def find_in_range_concurrent(lower, upper, pid, worker_num \\ 16) do
+        min_len = length(Integer.digits(lower))
+        max_len = length(Integer.digits(upper))
+        # find numbers in the range with even length
+        num_lens = Enum.filter(max_len..min_len, fn x -> rem(x, 2) == 0 end)
+
+        if num_lens != [] do
+            [max_even_len | other_even_len] = num_lens
+            parent = self()
+            # spawn one process for all less digits numbers 
+            first_ref = cond do
+                other_even_len != [] -> 
+                    other_upper_bound = trunc(:math.pow(10, hd(other_even_len)))-1 # need to check !!!!!!!!!1
+                    ref = make_ref()
+                    spawn_link(fn -> find_in_range_various_length(lower, other_upper_bound, pid); send(parent, {:done, ref}) end)
+                    ref 
+                true -> nil
+            end
+
+            # divide the maximum digits numbers evenly to #workers baskets and spawn a process for each basket
+            same_length_range = trunc(:math.pow(10,max_even_len-1))..upper
+            chunk_size = div(Enum.count(same_length_range), worker_num)
+            chunks = cond do 
+                chunk_size != 0 -> Enum.chunk_every(same_length_range, chunk_size)
+                true -> [Enum.to_list(same_length_range)]
+            end
+            
+            ranges = Enum.map(chunks, fn list -> Enum.take(list, 1) ++ Enum.take(list, -1) end)
+            refs = Enum.map(0..length(ranges)-1, fn n ->
+                ref = make_ref()
+                [lower, upper] = Enum.at(ranges, n)
+                spawn_link(fn -> find_in_range_same_length(lower, upper, pid); send(parent, {:done, ref}) end)
+                ref
+            end)
+
+            # wait for all spawned processes to finish
+            Enum.each(refs, fn _ref ->
+                if _ref != nil do
+                    receive do
+                        {:done, _ref} -> :ok
+                    end
+                end
+            end)
+        end
+    end
 end
 
 
