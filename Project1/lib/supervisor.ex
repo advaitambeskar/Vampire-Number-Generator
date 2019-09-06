@@ -7,15 +7,20 @@ defmodule VampireNumber.Supervisor do
     end
 
     def assign_task(process_id, node_list, n1, n2) do
-        GenServer.call(process_id, {:assign_task, node_list, n1, n2})
+        GenServer.call(process_id, {:assign_task, node_list, n1, n2}, :infinity)
     end
 
     def handle_call({:assign_task, node_list, n1, n2}, _, answer_list) do
         cnt = length(node_list)
+        
         # chunks = Enum.chunk_every(n1..n2, div(n2-n1, cnt)+1) # TODO: imporve chunk function
-        chunks = if rem(n2-n1+1,cnt) == 0, do: Enum.chunk_every(n1..n2, div(n2-n1+1, cnt)),
-                else: Enum.chunk_every(n1..n2, div(n2-n1+1, cnt)+1)
-        ranges = Enum.map(chunks, fn list -> Enum.take(list, 1) ++ Enum.take(list, -1) end)
+        # chunks = if rem(n2-n1+1,cnt) == 0, do: Enum.chunk_every(n1..n2, div(n2-n1+1, cnt)),
+        #         else: Enum.chunk_every(n1..n2, div(n2-n1+1, cnt)+1)
+        starts = :lists.seq(n1, n2, div(n2-n1+1, cnt))
+        ends = Enum.map(tl(starts), fn x->x-1 end) ++ [n2]
+        ranges = Enum.zip(starts, ends) |> Enum.map(fn {x,y}->[x,y] end)
+        IO.inspect(ranges)
+        # ranges = Enum.map(chunks, fn list -> Enum.take(list, 1) ++ Enum.take(list, -1) end)
         parent = self()      
 
         refs = for {node, range} <- Enum.zip(node_list, ranges) do

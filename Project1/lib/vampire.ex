@@ -132,7 +132,7 @@ defmodule VampireNumber do
             # spawn one process for all less digits numbers 
             first_ref = cond do
                 other_even_len != [] -> 
-                    other_upper_bound = trunc(:math.pow(10, hd(other_even_len)))-1 # need to check !!!!!!!!!1
+                    other_upper_bound = trunc(:math.pow(10, hd(other_even_len)))-1
                     ref = make_ref()
                     spawn_link(fn -> find_in_range_various_length(lower, other_upper_bound, pid); send(parent, {:done, ref}) end)
                     ref 
@@ -141,13 +141,19 @@ defmodule VampireNumber do
 
             # divide the maximum digits numbers evenly to #workers baskets and spawn a process for each basket
             same_length_range = trunc(:math.pow(10,max_even_len-1))..upper
-            chunk_size = div(Enum.count(same_length_range), worker_num)
-            chunks = cond do 
-                chunk_size != 0 -> Enum.chunk_every(same_length_range, chunk_size)
-                true -> [Enum.to_list(same_length_range)]
-            end
-            
-            ranges = Enum.map(chunks, fn list -> Enum.take(list, 1) ++ Enum.take(list, -1) end)
+            # chunk_size = div(Enum.count(same_length_range), worker_num)
+            # chunks = cond do 
+            #     chunk_size != 0 -> Enum.chunk_every(same_length_range, chunk_size)
+            #     true -> [Enum.to_list(same_length_range)]
+            # end
+            same_lower = trunc(:math.pow(10,max_even_len-1))
+            same_upper = upper
+            starts = :lists.seq(same_lower, same_upper, div(same_upper-same_lower+1, worker_num))
+            ends = Enum.map(tl(starts), fn x->x-1 end) ++ [same_upper]
+            ranges = Enum.zip(starts, ends) |> Enum.map(fn {x,y}->[x,y] end)
+            # IO.inspect(same_length_range)
+            # IO.inspect(ranges)
+            # ranges = Enum.map(chunks, fn list -> Enum.take(list, 1) ++ Enum.take(list, -1) end)
             refs = Enum.map(0..length(ranges)-1, fn n ->
                 ref = make_ref()
                 [lower, upper] = Enum.at(ranges, n)

@@ -4,11 +4,16 @@
 # Distributor spawn processes for
 
 # iex --name alice@127.0.0.1
-Node.start :"alice@127.0.0.1"
-Node.connect :"frank@127.0.0.1"
-Node.connect :"bob@127.0.0.1"
-node_list = Node.list()
 
+Node.start :"master@10.136.84.235"
+Node.set_cookie :somecookie
+# Node.connect :"advait@10.136.192.30"
+# Node.connect :"bob@127.0.0.1"
+# Node.connect :"Aotian@10.136.114.150" 
+Node.connect :"aotian@10.136.84.235"
+
+node_list = Node.list()
+IO.inspect(node_list)
 [s1, s2] = System.argv
 [n1, n2] = [String.to_integer(s1), String.to_integer(s2)]
 n1 = max(n1, 100)
