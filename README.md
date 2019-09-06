@@ -75,6 +75,14 @@ This is the image description for the modules that we have designed and written.
 
 ![Programs structure for easy understanding](/Project1/documentation/mod-diag.jpg)
 
+## Psuedocode
+This is the general idea of the code designed in this implementation of the *vampire number finder*.
+### Filename : proj1.exs
+The scripts functions as a helper script to accept the user input range and then print out the output. It essentially only calls the required functions written in their respective moduels to maintain functionality.
+### Filename : lib/vampire.ex
+
+
+
 ## Contributing
 Since this is a private repository intended to serve as a backup for the project as required by the course, pull requests would not be welcome unless authorized by the members of the public. This may change after the submission is complete.
 
