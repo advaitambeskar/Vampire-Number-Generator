@@ -11,7 +11,6 @@ Use the [link](https://elixir-lang.org/install.html) to install Elixir which is 
 ## Usage
 
 ```elixir
-cd Project1
 mix run proj1.exs <number 1> <number 2>
 ```
 
